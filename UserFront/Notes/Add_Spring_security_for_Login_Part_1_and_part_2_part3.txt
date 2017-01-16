@@ -1,0 +1,21 @@
+Part1
+Go to pom.xml file and add dependency on security.Basically this is the spring security for starter project.
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		
+Now, add the configuration file. userFront>New>Folder>config and inside config folder create new class called SecurityConfig
+Here, we will try to develop our spring security functionality
+
+Part2
+
+Here also, we will try to develop our spring security functionality.
+
+Here, we goona add some domain models specific for spring security.
+They are Role, UserRole, Authority java class files. The need of these three classes: these are required table for the spring
+ security to work.
+ 
+After we define the main models, lets go back to our service, In UserServiceImpl folder create new class UserSecurityService.java
+
+

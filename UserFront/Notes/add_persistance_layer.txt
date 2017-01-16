@@ -1,0 +1,46 @@
+ 
+ Add Persistance Layer------HIBERNATE
+ 
+ After filling out the form,after post or submit the back-end need to submit the form to the database. That is, the back-end
+ will retrieve the data and persist the data to other database. So, we need to invoke database operations into our project.
+ So, we need to bring in the hibernate dependencies. The reason we need to use hibernate is because whatever the information 
+ resigning in the system is just the memory. FOR EG: when the electricity goes off, there will be problem in the server, or 
+ it will stop working, and the memory will be gone and all those data we have created will be lost. so in order to prevent 
+ that , we have to persist the data into somewhere. Lot of times, we store in the harddrive.and within the harddrive we are
+ using the database like mysql(relational). Generally speaking there will be gap between java class model and relational db coz 
+ in relational db, everything is just table(rows and columns) but in java class we have class fields and class mappers. So, to 
+ cover that gap, we need to add another layer that is called persistance layer. And Hibernate is just an implementation for this 
+ layer.  So, we will use JPA specification. Hibernate is jsut like exptended form of JPA. Here, we will use hibernate.
+ 
+ Open pom.xml and add  two dependencies over there. 1. spring-boot-starter-jdbc  2. spring-boot-starter-data-jpa 
+ 
+ Now, we need to modify our models as well need to add some annotations. Go to Appointment.java , and add annotaions
+ 
+ @Entity--- this annotation will make this class will be consider as a entity and when hibernate started to run this entity will
+ 			be persisted into the db. And in order to do that, we need to specify the primary key.
+ @Id---this indicate that this field 'private Long id;' will be the primary key. and this primary key(id) will be automatically 
+ 		generated the annotaion @GeneratedValue(strategy = GenerationType.AUTO). This means every time just the number will be
+ 		increased from the previous one like 0,1,2,3,4... 
+ @ManyToOne-- its basically refering the relationship between Appointment and User. One user can have multiple appointments.
+ 			so the relation is many to one from appointment to user. 
+ @JoinColumn(name="user_id")--in order to reference appointment to user, we need to add a cloumn, and this column is primary to 
+ 			to the user.
+ ALSO, we add the toString() to the Appointment.java file. 
+ 
+ Next, we gonna modify our primaryAccount.java as well in the same manner.
+ 
+ @OneToMany(mappedBy = "primaryAccount" cascade = CascadeType.ALL, fetch = FetchType.LAZY)-- but this time we are mapping the 
+ 		primaryAccount to the primaryTransactionList. One primaryAccount can have multiple primaryTransactionList. that is 
+ 		from one primaryAccount to list of  primaryTransactionList. 
+ 		mappedBy = "primaryAccount"--this means that there will be a field called primaryAccount in the primaryTransactionList. 
+ 					this shows how we link between these two.
+ 		cascade = CascadeType.ALL-- whatever updates it gets, will be provacated to all
+ 		fetch = FetchType.LAZY-- 
+ 		
+ @JsonIgnore--- In primaryTransactionList, we have field called primaryAccount. Also, we have field primaryTransactionList in
+ 				primaryAccount. So, there will be round trip reference. One is referring back to other. If we have this relation, 
+ 				and we tried to serialize either of the object lets say primaryAccount, or primaryTransaction into Json format, 
+ 				then it will go into infinite loop, which will eventually pop up the error. So, this annotation will break the 
+ 				loop. If we do @JsonIgnore private List<PrimaryTransaction> primaryTransactionList; then, it will ignore 
+ 				PrimaryTransaction field. 
+  
