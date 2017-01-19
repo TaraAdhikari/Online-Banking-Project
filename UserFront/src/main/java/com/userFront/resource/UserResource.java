@@ -3,6 +3,7 @@ package com.userFront.resource;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,8 +16,9 @@ import com.userFront.domain.User;
 import com.userFront.service.TransactionService;
 import com.userFront.service.UserService;
 
-@RestController
+@RestController//when we are returning some instances, spring will help us to de-serialize by-default and pass that into the JSON format
 @RequestMapping("/api")
+@PreAuthorize("hasRole('ADMIN')")//if we use hasrole method then spring will automatically use as ROLE_ADMIN
 public class UserResource {
 	
 	@Autowired
